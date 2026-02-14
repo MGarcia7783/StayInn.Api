@@ -1,0 +1,15 @@
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\bin\Debug\net10.0\StayInn.Application.deps.json
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\bin\Debug\net10.0\StayInn.Application.dll
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\bin\Debug\net10.0\StayInn.Application.pdb
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\bin\Debug\net10.0\StayInn.Domain.dll
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\bin\Debug\net10.0\StayInn.Domain.pdb
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.csproj.AssemblyReference.cache
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.AssemblyInfoInputs.cache
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.AssemblyInfo.cs
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.csproj.CoreCompileInputs.cache
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn..32A0A47A.Up2Date
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.dll
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\refint\StayInn.Application.dll
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\StayInn.Application.pdb
+C:\Programacion\Optativa Profesional I\StayInn\StayInn.Application\obj\Debug\net10.0\ref\StayInn.Application.dll

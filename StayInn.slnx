@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="StayInn.Api/StayInn.Api.csproj" />
+  <Project Path="StayInn.Application/StayInn.Application.csproj" Id="81713c4f-995e-46bb-a04d-bfc4a494c98c" />
+  <Project Path="StayInn.Domain/StayInn.Domain.csproj" Id="7253fbaa-dadf-4952-a81f-241e62d27389" />
+  <Project Path="StayInn.Infrastructure/StayInn.Infrastructure.csproj" Id="4190ae39-a115-49ee-b7bf-c1180bc10ca7" />
+</Solution>
