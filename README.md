@@ -14,17 +14,23 @@
 
 
 ## 🏗️ Estructura del Proyecto
+
 El proyecto se divide en 4 capas principales siguiendo los principios de la arquitectura limpia:
-**- StayInn.Domain:** Contiene las entidades principales, enums y las interfaces de los repositorios. Es el corazón del negocio y no tiene dependencias externas.
-**- StayInn.Application:** Define la lógica de negocio, servicios, DTOs y perfiles de mapeo (AutoMapper).
-**- StayInn.Infrastructure:** Implementa el acceso a datos (PostgreSQL), el ApplicationDbContext, las migraciones y servicios de infraestructura.
-**- StayInn.Api:** Punto de entrada de la aplicación. Contiene los controladores, la configuración de la inyección de dependencias y los middlewares.
+
+- **StayInn.Domain:** Contiene las entidades principales, enums y las interfaces de los repositorios. Es el corazón del negocio y no tiene dependencias externas.
+- **StayInn.Application:** Define la lógica de negocio, servicios, DTOs y perfiles de mapeo (AutoMapper).
+- **StayInn.Infrastructure:** Implementa el acceso a datos (PostgreSQL), el ApplicationDbContext, las migraciones y servicios de infraestructura.
+- **StayInn.Api:** Punto de entrada de la aplicación. Contiene los controladores, la configuración de la inyección de dependencias y los middlewares. 
 
 
 ## 🛠️ Funcionalidades Principales
+
 ✅ Gestión de Habitaciones: CRUD completo y control de disponibilidad.
+
 ✅ Sistema de Reservas: Motor de reservaciones con cálculo automático de montos y manejo de estados (Pendiente, Confirmada, Cancelada).
+
 ✅ Áreas de Esparcimiento: Administración de zonas comunes del hotel para la experiencia del cliente.
+
 ✅ Geolocalización: Soporte para coordenadas (Latitud/Longitud) para integración con mapas en el frontend.
 
 

@@ -1067,11 +1067,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Programacion\\Optativa Profesional I\\StayInn\\StayInn.Domain\\StayInn.Domain.csproj",
+      "projectUniqueName": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\StayInn.Domain\\StayInn.Domain.csproj",
       "projectName": "StayInn.Domain",
-      "projectPath": "C:\\Programacion\\Optativa Profesional I\\StayInn\\StayInn.Domain\\StayInn.Domain.csproj",
+      "projectPath": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\StayInn.Domain\\StayInn.Domain.csproj",
       "packagesPath": "C:\\Users\\prueb\\.nuget\\packages\\",
-      "outputPath": "C:\\Programacion\\Optativa Profesional I\\StayInn\\StayInn.Domain\\obj\\",
+      "outputPath": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\StayInn.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

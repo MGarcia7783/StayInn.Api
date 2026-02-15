@@ -1,7 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Programacion\\Optativa Profesional I\\StayInn\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{511CC2A4-409F-42BF-8B69-F151EED72753}|StayInn.Api\\StayInn.Api.csproj|c:\\programacion\\optativa profesional i\\2026\\stayinn\\stayinn.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{511CC2A4-409F-42BF-8B69-F151EED72753}|StayInn.Api\\StayInn.Api.csproj|solutionrelative:stayinn.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 207,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +31,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\StayInn.Api\\Program.cs",
+              "RelativeDocumentMoniker": "StayInn.Api\\Program.cs",
+              "ToolTip": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\StayInn.Api\\Program.cs",
+              "RelativeToolTip": "StayInn.Api\\Program.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAAAEsAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T16:32:37.412Z",
+              "EditorCaption": ""
             }
           ]
         }

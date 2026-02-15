@@ -32,6 +32,7 @@ namespace StayInn.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     NombreCompleto = table.Column<string>(type: "text", nullable: false),
+                    Activo = table.Column<bool>(type: "boolean", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -63,12 +64,15 @@ namespace StayInn.Infrastructure.Migrations
                     Telefono = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     Descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Direccion = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    Latitud = table.Column<double>(type: "double precision", precision: 9, scale: 6, nullable: false),
-                    Longitud = table.Column<double>(type: "double precision", precision: 9, scale: 6, nullable: false)
+                    Latitud = table.Column<decimal>(type: "numeric(9,6)", precision: 9, scale: 6, nullable: false),
+                    Longitud = table.Column<decimal>(type: "numeric(9,6)", precision: 9, scale: 6, nullable: false),
+                    ImagenPrincipal = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Hotel", x => x.Id);
+                    table.CheckConstraint("CK_Hotel_Latitud", "\"Latitud\" BETWEEN -90 AND 90");
+                    table.CheckConstraint("CK_Hotel_Longitud", "\"Longitud\" BETWEEN -180 AND 180");
                 });
 
             migrationBuilder.CreateTable(
@@ -205,7 +209,7 @@ namespace StayInn.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Numero = table.Column<string>(type: "text", nullable: false),
+                    Numero = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     Descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     PrecioNoche = table.Column<decimal>(type: "numeric(11,2)", nullable: false),
                     ImagenUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
@@ -216,6 +220,8 @@ namespace StayInn.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Habitaciones", x => x.Id);
+                    table.CheckConstraint("CK_Habitacion_CapacidadMax", "\"CapacidadMax\" >= 1");
+                    table.CheckConstraint("CK_Habitacion_PrecioNoche", "\"PrecioNoche\" > 0");
                     table.ForeignKey(
                         name: "FK_Habitaciones_Hotel_HotelId",
                         column: x => x.HotelId,
@@ -233,13 +239,16 @@ namespace StayInn.Infrastructure.Migrations
                     FechaEntrada = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     FechaSalida = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     MontoTotal = table.Column<decimal>(type: "numeric(11,2)", nullable: false),
-                    Estado = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    Estado = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     HabitacionId = table.Column<int>(type: "integer", nullable: false),
                     UsuarioId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservaciones", x => x.Id);
+                    table.CheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')");
+                    table.CheckConstraint("CK_Reservacion_Fechas", "\"FechaSalida\" >= \"FechaEntrada\"");
+                    table.CheckConstraint("CK_Reservacion_MontoTotal", "\"MontoTotal\" >= 0");
                     table.ForeignKey(
                         name: "FK_Reservaciones_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,

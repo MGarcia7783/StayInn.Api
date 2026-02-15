@@ -1,6 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
-using StayInn.Infrastructure.Persistence;
+using StayInn.Application.Interfaces.Persistence;
+using StayInn.Infrastructure.Persistence.Data;
+using StayInn.Infrastructure.Persistence.Repositories;
+using System.Runtime.Intrinsics.X86;
 
 
 // Compatibilidad de fechas para Postgres
@@ -40,9 +43,11 @@ if (string.IsNullOrWhiteSpace(port)) variablesFaltantes.Add("DB_PORT");
 
 if (variablesFaltantes.Any())
 {
-    var menssage = $"Faltan variables de entorno de conexión a la base de datos: {string.Join(", ", variablesFaltantes)}";
-    Console.Error.WriteLine(menssage);
+    throw new Exception(
+        $"Faltan variables de entorno: {string.Join(", ", variablesFaltantes)}"
+    );
 }
+
 
 
 // Contruir la cadena de conexión en formato PostgreSQL
@@ -51,13 +56,24 @@ var connectionString =
     $"Port={port};" +
     $"Database={database};" +
     $"Username={user};" +
-    $"Password={password};";
+    $"Password={password};"; /*+
+    $"SSL Mode=Require;" +             
+    $"Trust Server Certificate=true;";*/
 
 // Registrar ApplicationDbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
+
+
+
+// Registrar repositorios con sus interfaces
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IHabitacionRepository, HabitacionRepository>();
+builder.Services.AddScoped<IAreaEsparcimientoRepository, AreaEsparciminetoRepository>();
+builder.Services.AddScoped<IReservacionRepository, ReservacionRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 
 

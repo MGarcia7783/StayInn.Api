@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "SiSTXX1bIRg=",
+  "dgSpecHash": "WWUiIZPKzxo=",
   "success": true,
-  "projectFilePath": "C:\\Programacion\\Optativa Profesional I\\StayInn\\StayInn.Application\\StayInn.Application.csproj",
+  "projectFilePath": "C:\\Programacion\\Optativa Profesional I\\2026\\StayInn\\StayInn.Application\\StayInn.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\prueb\\.nuget\\packages\\automapper\\16.0.0\\automapper.16.0.0.nupkg.sha512",
     "C:\\Users\\prueb\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\10.0.3\\microsoft.aspnetcore.cryptography.internal.10.0.3.nupkg.sha512",
     "C:\\Users\\prueb\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\10.0.3\\microsoft.aspnetcore.cryptography.keyderivation.10.0.3.nupkg.sha512",
     "C:\\Users\\prueb\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.3\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.3.nupkg.sha512",
@@ -26,7 +27,11 @@
     "C:\\Users\\prueb\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.3\\microsoft.extensions.logging.abstractions.10.0.3.nupkg.sha512",
     "C:\\Users\\prueb\\.nuget\\packages\\microsoft.extensions.options\\10.0.3\\microsoft.extensions.options.10.0.3.nupkg.sha512",
     "C:\\Users\\prueb\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\10.0.3\\microsoft.extensions.options.configurationextensions.10.0.3.nupkg.sha512",
-    "C:\\Users\\prueb\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.3\\microsoft.extensions.primitives.10.0.3.nupkg.sha512"
+    "C:\\Users\\prueb\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.3\\microsoft.extensions.primitives.10.0.3.nupkg.sha512",
+    "C:\\Users\\prueb\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.14.0\\microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
+    "C:\\Users\\prueb\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.14.0\\microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
+    "C:\\Users\\prueb\\.nuget\\packages\\microsoft.identitymodel.logging\\8.14.0\\microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
+    "C:\\Users\\prueb\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.14.0\\microsoft.identitymodel.tokens.8.14.0.nupkg.sha512"
   ],
   "logs": []
 }

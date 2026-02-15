@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using StayInn.Infrastructure.Persistence;
+using StayInn.Infrastructure.Persistence.Data;
 
 #nullable disable
 
 namespace StayInn.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260214035119_MigrarBaseDatos")]
+    [Migration("20260215145852_MigrarBaseDatos")]
     partial class MigrarBaseDatos
     {
         /// <inheritdoc />
@@ -165,6 +165,9 @@ namespace StayInn.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -291,7 +294,8 @@ namespace StayInn.Infrastructure.Migrations
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<decimal>("PrecioNoche")
                         .HasColumnType("decimal(11,2)");
@@ -300,7 +304,12 @@ namespace StayInn.Infrastructure.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("Habitaciones");
+                    b.ToTable("Habitaciones", t =>
+                        {
+                            t.HasCheckConstraint("CK_Habitacion_CapacidadMax", "\"CapacidadMax\" >= 1");
+
+                            t.HasCheckConstraint("CK_Habitacion_PrecioNoche", "\"PrecioNoche\" > 0");
+                        });
                 });
 
             modelBuilder.Entity("StayInn.Domain.Entities.Hotel", b =>
@@ -326,13 +335,18 @@ namespace StayInn.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<double>("Latitud")
-                        .HasPrecision(9, 6)
-                        .HasColumnType("double precision");
+                    b.Property<string>("ImagenPrincipal")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
-                    b.Property<double>("Longitud")
+                    b.Property<decimal>("Latitud")
                         .HasPrecision(9, 6)
-                        .HasColumnType("double precision");
+                        .HasColumnType("numeric(9,6)");
+
+                    b.Property<decimal>("Longitud")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("numeric(9,6)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -346,7 +360,12 @@ namespace StayInn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hotel");
+                    b.ToTable("Hotel", t =>
+                        {
+                            t.HasCheckConstraint("CK_Hotel_Latitud", "\"Latitud\" BETWEEN -90 AND 90");
+
+                            t.HasCheckConstraint("CK_Hotel_Longitud", "\"Longitud\" BETWEEN -180 AND 180");
+                        });
                 });
 
             modelBuilder.Entity("StayInn.Domain.Entities.Reservacion", b =>
@@ -357,10 +376,10 @@ namespace StayInn.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Estado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
 
                     b.Property<DateTimeOffset>("FechaEntrada")
                         .HasColumnType("timestamp with time zone");
@@ -386,7 +405,14 @@ namespace StayInn.Infrastructure.Migrations
 
                     b.HasIndex("FechaEntrada", "FechaSalida");
 
-                    b.ToTable("Reservaciones");
+                    b.ToTable("Reservaciones", t =>
+                        {
+                            t.HasCheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')");
+
+                            t.HasCheckConstraint("CK_Reservacion_Fechas", "\"FechaSalida\" >= \"FechaEntrada\"");
+
+                            t.HasCheckConstraint("CK_Reservacion_MontoTotal", "\"MontoTotal\" >= 0");
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

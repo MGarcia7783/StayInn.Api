@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StayInn.Domain.Entities;
 using StayInn.Domain.Enums;
 
-namespace StayInn.Infrastructure.Persistence
+namespace StayInn.Infrastructure.Persistence.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -55,6 +55,24 @@ namespace StayInn.Infrastructure.Persistence
                 entity.Property(h => h.Longitud)
                 .HasPrecision(9, 6)
                 .IsRequired();
+
+                entity.Property(h => h.ImagenPrincipal)
+                .IsRequired()
+                .HasMaxLength(500);
+
+                // CHECK CONSTRAINTS
+                entity.ToTable(h =>
+                {
+                    h.HasCheckConstraint(
+                        "CK_Hotel_Latitud",
+                        "\"Latitud\" BETWEEN -90 AND 90"
+                    );
+
+                    h.HasCheckConstraint(
+                        "CK_Hotel_Longitud",
+                        "\"Longitud\" BETWEEN -180 AND 180"
+                    );
+                });
             });
 
 
@@ -69,13 +87,13 @@ namespace StayInn.Infrastructure.Persistence
                 .IsRequired()
                 .HasMaxLength(50);
 
-                entity.Property(e => e.Descripcion).
-                IsRequired().
-                HasMaxLength(500);
+                entity.Property(e => e.Descripcion)
+                .IsRequired()
+                .HasMaxLength(500);
 
-                entity.Property(e => e.ImagenUrl).
-                IsRequired().
-                HasMaxLength(500);
+                entity.Property(e => e.ImagenUrl)
+                .IsRequired()
+                .HasMaxLength(500);
 
                 // Relación con el modelo hotel
                 entity.HasOne(h => h.Hotel)
@@ -94,7 +112,8 @@ namespace StayInn.Infrastructure.Persistence
                 .ValueGeneratedOnAdd();
 
                 entity.Property(h => h.Numero)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(10);
 
                 entity.Property(h => h.Descripcion)
                 .IsRequired()
@@ -122,6 +141,21 @@ namespace StayInn.Infrastructure.Persistence
                 .HasForeignKey(h => h.HotelId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
+
+                // CHECK CONSTRAINTS
+                entity.ToTable(h =>
+                {
+                    h.HasCheckConstraint(
+                        "CK_Habitacion_PrecioNoche",
+                        "\"PrecioNoche\" > 0"
+                    );
+
+                    h.HasCheckConstraint(
+                        "CK_Habitacion_CapacidadMax",
+                        "\"CapacidadMax\" >= 1"
+                    );
+                });
+
             });
 
 
@@ -145,14 +179,9 @@ namespace StayInn.Infrastructure.Persistence
                 .HasColumnType("decimal(11,2)");
 
                 entity.Property(r => r.Estado)
-                .HasDefaultValue(EstadoReservacion.Pendiente)
+                .HasConversion<string>()
+                .HasMaxLength(15)
                 .IsRequired();
-
-                // Indices para optimizar consultas
-                entity.HasIndex(r => r.HabitacionId);
-                entity.HasIndex(r => r.UsuarioId);
-                entity.HasIndex(r => new { r.FechaEntrada, r.FechaSalida });
-
 
                 // Relación con el modelo habitación
                 entity.HasOne(r => r.Habitacion)
@@ -167,6 +196,30 @@ namespace StayInn.Infrastructure.Persistence
                 .HasForeignKey(r => r.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
+
+                // Indices para optimizar consultas
+                entity.HasIndex(r => r.HabitacionId);
+                entity.HasIndex(r => r.UsuarioId);
+                entity.HasIndex(r => new { r.FechaEntrada, r.FechaSalida });
+
+                // CHECK CONSTRAINTS
+                entity.ToTable(r =>
+                {
+                    r.HasCheckConstraint(
+                        "CK_Reservacion_Fechas",
+                        "\"FechaSalida\" >= \"FechaEntrada\""
+                    );
+
+                    r.HasCheckConstraint(
+                        "CK_Reservacion_MontoTotal",
+                        "\"MontoTotal\" >= 0"
+                    );
+
+                    r.HasCheckConstraint(
+                        "CK_Reservacion_Estado",
+                        "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')"
+                    );
+                });
             });
         }
     }

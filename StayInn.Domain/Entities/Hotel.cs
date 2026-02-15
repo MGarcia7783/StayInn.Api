@@ -10,8 +10,12 @@ namespace StayInn.Domain.Entities
         public string Telefono { get; set; } = null!;
         public string Descripcion { get; set; } = null!;
         public string Direccion { get; set; } = null!;
-        public double Latitud { get; set; }
-        public double Longitud { get; set; }
+
+        public decimal Latitud { get; set; }
+        public decimal Longitud { get; set; }
+
+        public string ImagenPrincipal { get; set; } = null!;
+
 
         // Navegación
         public ICollection<AreaEsparcimiento> AreasEsparcimiento { get; set; } = new List<AreaEsparcimiento>();
