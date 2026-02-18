@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayInn.Api.Request.AreaEsparcimiento;
@@ -23,6 +24,7 @@ namespace StayInn.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AreaEsparcimientoDto>>> ObtenerTodas()
         {
             var registros = await _service.ObtenerTodasAsync();
@@ -31,6 +33,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpGet("home")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AreaEsparcimientoHomeDto>>> ObtenerInicio()
         {
             var registros = await _service.ObtenerInicioAsync();
@@ -39,6 +42,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpGet("{id:int}", Name = "GetAreaEsparcimiento")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAreaEsparcimiento(int id)
         {
             var registro = await _service.ObtenerPorIdAsync(id);
@@ -47,6 +51,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<AreaEsparcimientoDto>> Crear([FromForm] AreaEsparcimientoCrearRequest request)
         {
             if(!ModelState.IsValid)
@@ -72,6 +77,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpPut]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<AreaEsparcimientoDto>> Actualizar(int id, [FromForm] AreaEsparcimientoActualizarRequest request)
         {
             if (!ModelState.IsValid)
@@ -101,6 +107,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Eliminar(int id)
         {
             await _service.EliminarAsync(id);

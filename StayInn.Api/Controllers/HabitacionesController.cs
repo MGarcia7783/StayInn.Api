@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayInn.Application.DTOs.Habitacion;
 using StayInn.Application.DTOs.Hotel;
@@ -12,15 +13,14 @@ namespace StayInn.Api.Controllers
     public class HabitacionesController : ControllerBase
     {
         private readonly IHabitacionService _service;
-        private readonly IHotelService _hotelService;
 
-        public HabitacionesController(IHabitacionService service, IHotelService hotelService)
+        public HabitacionesController(IHabitacionService service)
         {
             _service = service;
-            _hotelService = hotelService;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<IEnumerable<HabitacionDto>>> ObtenerTodasHabitaciones([FromQuery] int pagina = 1, [FromQuery] int tamanoPagina = 10)
         {
             var habitaciones = await _service.ObtenerTodasAsync(pagina, tamanoPagina);
@@ -31,6 +31,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpGet("disponibles")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<HabitacionDto>>> ObtenerHabitacionesDisponibles([FromQuery] int pagina = 1, [FromQuery] int tamanoPagina = 10)
         {
             var habitaciones = await _service.ObtenerDisponiblesAsync(pagina, tamanoPagina);
@@ -41,6 +42,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpGet("{id:int}", Name = "GetHabitacion")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetHabitacion(int id)
         {
             var habitacion = await _service.ObtenerPorIdAsync(id);
@@ -49,6 +51,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<HabitacionDto>> Crear([FromBody] HabitacionCrearDto dto)
         {
             if (!ModelState.IsValid)
@@ -60,6 +63,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpPut]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<HabitacionDto>> Actualizar(int id, [FromBody] HabitacionActualizarDto dto)
         {
             if (!ModelState.IsValid)
@@ -71,6 +75,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpPut("{id:int}/estado")]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> CambiarEstado(int id, [FromBody] HabitacionCambiarEstadoDto dto)
         {
             if (id != dto.Id)
@@ -86,6 +91,7 @@ namespace StayInn.Api.Controllers
 
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Eliminar(int id)
         {
             await _service.EliminarAsync(id);

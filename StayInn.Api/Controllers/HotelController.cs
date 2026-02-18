@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StayInn.Api.Request.Hotel;
 using StayInn.Application.DTOs.Hotel;
@@ -21,7 +22,9 @@ namespace StayInn.Api.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> ObtenerHotel()
         {
             var hotels = await _service.ObtenerAsync();
@@ -31,7 +34,9 @@ namespace StayInn.Api.Controllers
             return Ok(hotels);
         }
 
+
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<HotelDto>> Crear([FromForm] HotelCrearRequest request)
         {
             if (!ModelState.IsValid)
@@ -63,7 +68,9 @@ namespace StayInn.Api.Controllers
             return CreatedAtAction(nameof(ObtenerHotel), new { id = hotel.Id }, hotel);
         }
 
+
         [HttpPut]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<HotelDto>> Actualizar([FromForm] HotelActualizarRequest request)
         {
             if (!ModelState.IsValid)
