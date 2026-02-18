@@ -123,10 +123,6 @@ namespace StayInn.Infrastructure.Persistence.Data
                 .IsRequired()
                 .HasColumnType("decimal(11,2)");
 
-                entity.Property(h => h.ImagenUrl)
-                .IsRequired()
-                .HasMaxLength(500);
-
                 entity.Property(h => h.EstaDisponible)
                 .HasDefaultValue(true)
                 .IsRequired();

@@ -4,16 +4,24 @@ namespace StayInn.Application.DTOs.Usuario
 {
     public class UsuarioRegistroDto
     {
-        [Required]
-        [MaxLength(70, ErrorMessage = "El nombre no debe exceder los 70 caracteres.")]
+        [Required(ErrorMessage = "El nombre del usuario es requerido.")]
         public string NombreCompleto { get; set; } = null!;
 
-        [Required]
-        [EmailAddress]
+
+        [Required(ErrorMessage = "El email del usuario es requerido.")]
         public string Email { get; set; } = null!;
 
-        [Required]
-        [MinLength(6)]
+
+        [Required(ErrorMessage = "La contraseña del usuario es requerida.")]
         public string Password { get; set; } = null!;
+
+
+        [Required(ErrorMessage = "El rol del usuario es requerido.")]
+        public string Rol { get; set; } = null!;
+
+
+        [Required(ErrorMessage = "El teléfono es requerido.")]
+        public string PhoneNumber { get; set; } = null!;
+        public bool Activo { get; set; } = true;   // <--- Para el Toggle en la App
     }
 }

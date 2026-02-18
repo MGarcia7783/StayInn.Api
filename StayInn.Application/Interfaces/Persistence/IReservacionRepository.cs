@@ -4,11 +4,12 @@ namespace StayInn.Application.Interfaces.Persistence
 {
     public interface IReservacionRepository
     {
-        Task<Reservacion?> GetByIdAsync(int id);
-        Task<IEnumerable<Reservacion>> GetByUsuarioAsync(string usuarioId);
+        Task<Reservacion?> ObtenerPorIdAsync(int id);
+        Task<IEnumerable<Reservacion>> ObtenerTodasAsync(int pagina, int tamanoPagina);
+        Task<int> ContarTodasAsync(); 
+        Task<IEnumerable<Reservacion>> ObtenerPorUsuarioAsync(string usuarioId);
         
 
-        Task CreateAsync(Reservacion reservacion);
-        Task UpdateAsync(Reservacion reservacion);
+        Task CrearAsync(Reservacion reservacion);
     }
 }

@@ -1,9 +1,15 @@
 
+using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+using StayInn.Api.Middleware;
 using StayInn.Application.Interfaces.Persistence;
+using StayInn.Application.Interfaces.Service;
+using StayInn.Application.Mappings;
+using StayInn.Application.Services;
 using StayInn.Infrastructure.Persistence.Data;
 using StayInn.Infrastructure.Persistence.Repositories;
-using System.Runtime.Intrinsics.X86;
+using StayInn.Infrastructure.Services;
 
 
 // Compatibilidad de fechas para Postgres
@@ -67,6 +73,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 
+// Obtener credenciales de Cloudinary
+var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME");
+var apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
+var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
+
+
+// Crear cuenta y cloudinary
+var accont = new Account(cloudName, apiKey, apiSecret);
+var cloudinary = new Cloudinary(accont) { Api = { Secure = true } };
+
+
+// Registrar Cloudinary
+builder.Services.AddSingleton(cloudinary);
+
 
 // Registrar repositorios con sus interfaces
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
@@ -76,8 +96,34 @@ builder.Services.AddScoped<IReservacionRepository, ReservacionRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 
+// Registrar servicios con sus interfaces
+builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
+builder.Services.AddScoped<IHabitacionService, HabitacionService>();
+builder.Services.AddScoped<IAreaEsparcimientoService, AreaEsparcimientoService>();
 
+
+// Registrar AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
+// Agregar controladores
 builder.Services.AddControllers();
+
+
+// Swagger / OpenAPI
+builder.Services.AddEndpointsApiExplorer(); // Detectar los endpoint de API
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "StayInn API",
+        Version = "v1",
+        Description = "API para gestión de hotel StayInn"
+    });
+});
+
+
 builder.Services.AddOpenApi();
 
 
@@ -110,11 +156,18 @@ app.Lifetime.ApplicationStarted.Register(() =>
 });
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+// Registrar Middleware para excepciones globales
+app.UseMiddleware<ExceptionMiddleware>();
+
+
+
+// Configuración para entornos de desarrollo y produccon
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.MapOpenApi();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "AtayInn API v1");
+});
 
 app.UseHttpsRedirection();
 

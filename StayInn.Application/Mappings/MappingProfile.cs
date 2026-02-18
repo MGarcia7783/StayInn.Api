@@ -4,6 +4,7 @@ using StayInn.Application.DTOs.Habitacion;
 using StayInn.Application.DTOs.Hotel;
 using StayInn.Application.DTOs.Reservacion;
 using StayInn.Application.DTOs.Usuario;
+using StayInn.Application.Response;
 using StayInn.Domain.Entities;
 
 namespace StayInn.Application.Mappings
@@ -15,7 +16,11 @@ namespace StayInn.Application.Mappings
             // Hotel (Adim)
             CreateMap<Hotel, HotelDto>();
             CreateMap<HotelCrearDto, Hotel>();
-            CreateMap<HotelActualizarDto, Hotel>();
+            CreateMap<HotelActualizarDto, Hotel>()
+                .ForMember(dest => dest.ImagenPrincipal,
+                    opt => opt.Ignore())
+                .ForAllMembers(opt =>
+                    opt.Condition((src, dest, srcMember) => srcMember != null));
 
 
             // Áreas de Esparcimiento
@@ -23,13 +28,17 @@ namespace StayInn.Application.Mappings
 
             CreateMap<AreaEsparcimiento, AreaEsparcimientoDto>();
             CreateMap<AreaEsparcimientoCrearDto, AreaEsparcimiento>();
-            CreateMap<AreaEsparcimientoActualizarDto, AreaEsparcimiento>();
+            CreateMap<AreaEsparcimientoActualizarDto, AreaEsparcimiento>()
+                .ForAllMembers(opts =>
+                    opts.Condition((src, dest, srcMember) => srcMember != null)
+                );
 
 
             // Habitaciones
             CreateMap<Habitacion, HabitacionDto>();
             CreateMap<HabitacionCrearDto, Habitacion>();
-            CreateMap<HabitacionActualizarDto, Habitacion>();
+            CreateMap<HabitacionActualizarDto, Habitacion>()
+                .ForMember(d => d.HotelId, opt => opt.Ignore());
 
 
             // Reservaciones
@@ -51,19 +60,11 @@ namespace StayInn.Application.Mappings
 
 
             // Usuarios
-            CreateMap<ApplicationUser, UsuarioResponseDto>()
-                .ForMember(dest => dest.Email,
-                    opt => opt.MapFrom(src => src.Email!))
-                .ForMember(dest => dest.Rol,
-                    opt => opt.Ignore())
-                .ForMember(dest => dest.Token,
-                    opt => opt.Ignore());
+            CreateMap<ApplicationUser, UsuarioDto>();
 
             CreateMap<UsuarioRegistroDto, ApplicationUser>()
-                .ForMember(dest => dest.UserName,
-                    opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.Email,
-                    opt => opt.MapFrom(src => src.Email));
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

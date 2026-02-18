@@ -14,34 +14,28 @@ namespace StayInn.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<int> CountAsync()
-            => await _context.AreasEsparcimiento.CountAsync();
+        public async Task ActualizarAsync(AreaEsparcimiento areaEsparcimiento)
+        {
+            _context.AreasEsparcimiento.Update(areaEsparcimiento);
+            await _context.SaveChangesAsync();
+        }
 
-        public async Task CreateAsync(AreaEsparcimiento areaEsparcimiento)
+        public async Task CrearAsync(AreaEsparcimiento areaEsparcimiento)
         {
             _context.AreasEsparcimiento.Add(areaEsparcimiento);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task EliminarAsync(int id)
             => await _context.AreasEsparcimiento.Where(a => a.Id == id).ExecuteDeleteAsync();
 
-        public async Task<IEnumerable<AreaEsparcimiento>> GetAllAsync()
+        public async Task<IEnumerable<AreaEsparcimiento>> ObtenerInicioAsync()
             => await _context.AreasEsparcimiento.ToListAsync();
 
-        public async Task<AreaEsparcimiento?> GetByIdAsync(int id)
+        public async Task<AreaEsparcimiento?> ObtenerPorIdAsync(int id)
             => await _context.AreasEsparcimiento.FindAsync(id);
 
-        public async Task<IEnumerable<AreaEsparcimiento>> GetHomeAsync(int page, int pageSize)
-            => await _context.AreasEsparcimiento
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-        public async Task UpdateAsync(AreaEsparcimiento areaEsparcimiento)
-        {
-            _context.AreasEsparcimiento.Update(areaEsparcimiento);
-            await _context.SaveChangesAsync();
-        }
+        public async Task<IEnumerable<AreaEsparcimiento>> ObtenerTodasAsync()
+            => await _context.AreasEsparcimiento.ToListAsync();
     }
 }

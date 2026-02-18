@@ -15,8 +15,7 @@ namespace StayInn.Api.Request.AreaEsparcimiento
         [MaxLength(500)]
         public string Descripcion { get; set; } = null!;
 
-        [Required(ErrorMessage = "La imagen del área es obligatoria.")]
-        [MaxLength(500)]
+
         public IFormFile? ImagenUrl { get; set; }
     }
 }

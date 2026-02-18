@@ -11,6 +11,7 @@
 - Persistencia: Entity Framework Core con PostgreSQL  
 - Seguridad: Autenticación y Autorización basada en Roles con ASP.NET Core Identity y JWT (JSON Web Tokens) 
 - Documentación: Swagger / OpenAPI 
+0
 
 
 ## 🏗️ Estructura del Proyecto

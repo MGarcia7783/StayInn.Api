@@ -14,17 +14,17 @@ namespace StayInn.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<int> CountAsync()
+        public async Task<int> ContarAsync()
             => await _context.Users.CountAsync();
 
-        public async Task<IEnumerable<ApplicationUser>> GetAllAsync(int page, int pageSize)
-            => await _context.Users
-                .Skip((page - 1) * pageSize)
-                .OrderBy(u => u.NombreCompleto)
-                .Take(pageSize)
-                .ToListAsync();
-
-        public async Task<ApplicationUser?> GetByIdAsync(string id)
+        public async Task<ApplicationUser?> ObtenerPorIdAsync(string id)
             => await _context.Users.FindAsync(id);
+
+        public async Task<IEnumerable<ApplicationUser>> ObtenerTodosAsync(int pagina, int tamanoPagina)
+            => await _context.Users
+                .Skip((pagina - 1) * tamanoPagina)
+                .OrderBy(u => u.NombreCompleto)
+                .Take(tamanoPagina)
+                .ToListAsync();
     }
 }
