@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copiar archivos de proyecto
-COPY ["StayInn.sln", "./"]
+COPY ["StayInn.slnx", "./"]
 COPY ["StayInn.Api/StayInn.Api.csproj", "StayInn.Api/"]
 COPY ["StayInn.Application/StayInn.Application.csproj", "StayInn.Application/"]
 COPY ["StayInn.Domain/StayInn.Domain.csproj", "StayInn.Domain/"]
