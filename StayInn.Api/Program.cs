@@ -19,10 +19,6 @@ using System.Text;
 using System.Text.Json;
 
 
-// Compatibilidad de fechas para Postgres
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -69,9 +65,9 @@ var connectionString =
     $"Port={port};" +
     $"Database={database};" +
     $"Username={user};" +
-    $"Password={password};"; /*+
+    $"Password={password};" +
     $"SSL Mode=Require;" +             
-    $"Trust Server Certificate=true;";*/
+    $"Trust Server Certificate=true;";
 
 // Registrar ApplicationDbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -266,39 +262,37 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
+// Configuración de CORS
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        if (allowedOrigins != null && allowedOrigins.Length > 0)
+        {
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+        else
+        {
+            // Solo para desarrollo si no hay configuración
+            policy.AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    });
+});
+
 
 builder.Services.AddOpenApi();
 
 
 // Construir la aplicacion
 var app = builder.Build();
-
-
-// Comprobar la conexión a la base de datos
-app.Lifetime.ApplicationStarted.Register(() =>
-{
-    try
-    {
-        // Crear un scope para obtener el DbContext
-        using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        // Intentar conectar
-        if (dbContext.Database.CanConnect())
-        {
-            Console.WriteLine("Conexión a PostgreSQL establecida correctamente.");
-        }
-        else
-        {
-            Console.WriteLine($"No se puedo establecer la conexión a la base de datos.");
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.Error.WriteLine($"Error al comprobar la conexión a la base de datos: {ex.Message}");
-    }
-});
-
 
 
 // Registrar Middleware para excepciones globales
@@ -313,12 +307,21 @@ app.UseSwaggerUI(options =>
 });
 
 
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/swagger/index.html");
+    return Task.CompletedTask;
+});
+
+
 // Redireccionar HTTP a HTTPS en producción
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
 
+
+app.UseCors("FrontendPolicy");
 
 // Soporte para la autenticación
 app.UseAuthentication();
@@ -329,4 +332,13 @@ app.UseAuthorization();
 app.MapControllers();
 
 
-app.Run();
+// Ejecutar la app
+if (app.Environment.IsDevelopment())
+{
+    app.Run();
+}
+else
+{
+    var apiPort = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    app.Run($"http://0.0.0.0:{apiPort}");
+}
