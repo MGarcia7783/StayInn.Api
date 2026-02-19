@@ -14,8 +14,5 @@ namespace StayInn.Api.Request.AreaEsparcimiento
 
         [Required(ErrorMessage = "La imagen del área es obligatoria.")]
         public IFormFile ImagenUrl { get; set; } = null!;
-
-        [Required(ErrorMessage = "El hotel es obligatorio.")]
-        public int HotelId { get; set; }
     }
 }

@@ -164,11 +164,11 @@ namespace StayInn.Infrastructure.Persistence.Data
 
                 entity.Property(r => r.FechaEntrada)
                 .IsRequired()
-                .HasColumnType("timestamp with time zone");
+                .HasColumnType("date");
 
                 entity.Property(r => r.FechaSalida)
                 .IsRequired()
-                .HasColumnType("timestamp with time zone");
+                .HasColumnType("date");
 
                 entity.Property(r => r.MontoTotal)
                 .IsRequired()
@@ -213,7 +213,7 @@ namespace StayInn.Infrastructure.Persistence.Data
 
                     r.HasCheckConstraint(
                         "CK_Reservacion_Estado",
-                        "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')"
+                        "\"Estado\" IN ('Pendiente','Confirmada', 'Activa', 'Finalizada','Cancelada')"
                     );
                 });
             });

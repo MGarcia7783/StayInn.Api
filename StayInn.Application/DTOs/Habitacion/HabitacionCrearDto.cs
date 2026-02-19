@@ -4,9 +4,6 @@ namespace StayInn.Application.DTOs.Habitacion
 {
     public class HabitacionCrearDto
     {
-        [Required]
-        public int HotelId { get; set; }
-
 
         [Required(ErrorMessage = "El número de habitación es requerido.")]
         [StringLength(10, ErrorMessage = "El número de habitación no puede exceder los 10 caracteres.")]
@@ -14,7 +11,8 @@ namespace StayInn.Application.DTOs.Habitacion
 
 
         [Required(ErrorMessage = "La capacidad de la habitación es requerida.")]
-        [Range(1, int.MaxValue, ErrorMessage = "La capacidad de la habitación debe ser al menos 1.")]
+        [Range(1, 10, ErrorMessage = "La capacidad de la habitación debe ser al menos 1.")]
+
         public int CapacidadMax { get; set; }
 
 
@@ -24,7 +22,7 @@ namespace StayInn.Application.DTOs.Habitacion
 
 
         [Required(ErrorMessage = "El precio por noche de la habitación es requerido.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "El precio por noche de la habitación debe ser un valor positivo.")]
+        [Range(typeof(decimal), "0.01", "10000", ErrorMessage = "El precio por noche de la habitación debe ser un valor positivo.")]
         public decimal PrecioNoche { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StayInn.Infrastructure.Persistence.Data;
@@ -11,9 +12,11 @@ using StayInn.Infrastructure.Persistence.Data;
 namespace StayInn.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260219094300_ModifcarTipoDatoTablaHabitacion")]
+    partial class ModifcarTipoDatoTablaHabitacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -399,7 +402,7 @@ namespace StayInn.Infrastructure.Migrations
 
                     b.ToTable("Reservaciones", t =>
                         {
-                            t.HasCheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada', 'Activa', 'Finalizada','Cancelada')");
+                            t.HasCheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')");
 
                             t.HasCheckConstraint("CK_Reservacion_Fechas", "\"FechaSalida\" >= \"FechaEntrada\"");
 

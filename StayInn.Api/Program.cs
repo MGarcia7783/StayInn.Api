@@ -120,6 +120,7 @@ builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>(
 builder.Services.AddScoped<IHabitacionService, HabitacionService>();
 builder.Services.AddScoped<IAreaEsparcimientoService, AreaEsparcimientoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IReservacionService, ReservacionService>();
 
 
 // Configurar JWT Authentication

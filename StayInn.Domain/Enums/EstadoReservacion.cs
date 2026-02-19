@@ -5,7 +5,8 @@ namespace StayInn.Domain.Enums
     {
         Pendiente = 0,
         Confirmada = 1,
-        Cancelada = 2,
-        Completada = 3
+        Activa = 2,
+        Finalizada = 3,
+        Cancelada = 4
     }
 }

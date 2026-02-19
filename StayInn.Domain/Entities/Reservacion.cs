@@ -6,8 +6,8 @@ namespace StayInn.Domain.Entities
     {
         public int Id { get; set; }
 
-        public DateTimeOffset FechaEntrada { get; set; }
-        public DateTimeOffset FechaSalida { get; set; } 
+        public DateOnly FechaEntrada { get; set; }
+        public DateOnly FechaSalida { get; set; } 
         public decimal MontoTotal { get; set; }
         public EstadoReservacion Estado { get; set; } = EstadoReservacion.Pendiente;
 

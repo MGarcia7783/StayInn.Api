@@ -90,7 +90,7 @@ namespace StayInn.Application.Services
                 throw new ArgumentNullException(nameof(dto), "Los datos de la solicitud no pueden ser nulos.");
 
             var nuevoNumero = dto.Numero.Trim();
-            if(await _repository.ExisteNumeroHabitacionAsync(dto.Numero))
+            if(await _repository.ExisteNumeroHabitacionAsync(nuevoNumero))
                 throw new InvalidOperationException($"Ya existe una habitación con el número: '{dto.Numero}'.");
 
             // Obtener el hotelId

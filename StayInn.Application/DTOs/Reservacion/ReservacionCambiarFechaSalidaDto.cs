@@ -9,6 +9,6 @@ namespace StayInn.Application.DTOs.Reservacion
 
 
         [Required(ErrorMessage = "La fecha de salida es obligatoria.")]
-        public DateTime NuevaFechaSalida { get; set; }
+        public DateOnly NuevaFechaSalida { get; set; }
     }
 }

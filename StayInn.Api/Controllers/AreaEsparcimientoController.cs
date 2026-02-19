@@ -68,7 +68,7 @@ namespace StayInn.Api.Controllers
             {
                 Nombre = request.Nombre,
                 Descripcion = request.Descripcion,
-                HotelId = request.HotelId,
+                //HotelId = request.HotelId,
             };
 
             var registro = await _service.CrearAsync(dto, imagenUrl);

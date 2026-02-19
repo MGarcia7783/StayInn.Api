@@ -30,16 +30,37 @@ namespace StayInn.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> ExisteReservacionActivaEnRangoAsync(int habitacionId, DateOnly fechaEntrada, DateOnly fechaSalida, int? reservacionId = null)
+        {
+            return await _context.Reservaciones
+                .Where(r =>
+                    (reservacionId == null || r.Id != reservacionId) &&
+                    r.HabitacionId == habitacionId &&
+                    (r.Estado == EstadoReservacion.Pendiente ||
+                     r.Estado == EstadoReservacion.Confirmada) &&
+                    fechaEntrada < r.FechaSalida &&
+                    fechaSalida > r.FechaEntrada
+                )
+                .AnyAsync();
+        }
+
+        public async Task<int> GuardarCambiosAsync()
+            => await _context.SaveChangesAsync();
+
         public async Task<Reservacion?> ObtenerPorIdAsync(int id)
-            => await _context.Reservaciones.FindAsync(id);
+            => await _context.Reservaciones
+                .Include(r => r.Habitacion)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
         public async Task<IEnumerable<Reservacion>> ObtenerPorUsuarioAsync(string usuarioId)
             => await _context.Reservaciones
+                .Include(r =>r.Habitacion)
                 .Where(r => r.UsuarioId == usuarioId)
                 .ToListAsync();
 
         public async Task<IEnumerable<Reservacion>> ObtenerTodasAsync(int pagina, int tamanoPagina)
         => await _context.Reservaciones
+            .Include(r => r.Habitacion)
             .OrderByDescending(r => r.FechaEntrada)
             .ThenByDescending(r => r.Estado == EstadoReservacion.Pendiente)
             .Skip((pagina - 1) * tamanoPagina)

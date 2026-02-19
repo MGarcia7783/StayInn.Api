@@ -1,18 +1,19 @@
 ﻿using StayInn.Application.DTOs.Reservacion;
+using StayInn.Domain.Enums;
 
 namespace StayInn.Application.Interfaces.Service
 {
     public interface IReservacionService
     {
-        Task<IEnumerable<ReservacionResponseDto>> ObtenerTodasAsync(int pagina, int tamanoPagina);
+        Task<IEnumerable<ReservacionDto>> ObtenerTodasAsync(int pagina, int tamanoPagina);
         Task<int> ContarTodasAsync();
-        Task<IEnumerable<ReservacionResponseDto>> ObtenerPorUsuarioAsync(string usuarioId);
+        Task<IEnumerable<ReservacionDto>> ObtenerPorUsuarioAsync(string usuarioId);
+        Task<ReservacionDto> ObtenerPorIdAsync(int id);
 
 
-        Task<ReservacionResponseDto> CrearAsync(ReservacionCrearDto dto);
-        Task<bool> CancelarAsync(int idReservacion);   
-        Task<ReservacionResponseDto> CambiarFechaSalidaAsync(
-            ReservacionCambiarFechaSalidaDto dto
-        );
+        Task<ReservacionDto> CrearAsync(ReservacionCrearDto dto, string usuarioId);
+        Task<bool> CambiarEstadoAsync(int reservacionId, EstadoReservacion nuevoEstado);
+        Task<ReservacionDto> CambiarFechaSalidaAsync(ReservacionCambiarFechaSalidaDto dto);
+        Task<bool> CancelarAsync(int id);
     }
 }

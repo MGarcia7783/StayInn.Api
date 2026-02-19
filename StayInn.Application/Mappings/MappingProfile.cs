@@ -42,7 +42,7 @@ namespace StayInn.Application.Mappings
 
 
             // Reservaciones
-            CreateMap<Reservacion, ReservacionResponseDto>()
+            CreateMap<Reservacion, ReservacionDto>()
                 .ForMember(dest => dest.NumeroHabitacion,
                     opt => opt.MapFrom(src => src.Habitacion.Numero))
                 .ForMember(dest => dest.Estado,
@@ -50,13 +50,9 @@ namespace StayInn.Application.Mappings
 
             CreateMap<ReservacionCrearDto, Reservacion>()
                 .ForMember(dest => dest.Estado,
-                    opt => opt.Ignore()) // lo maneja el dominio
+                    opt => opt.Ignore())
                 .ForMember(dest => dest.MontoTotal,
-                    opt => opt.Ignore()); // se calcula en servicio
-
-            CreateMap<ReservacionCambiarFechaSalidaDto, Reservacion>()
-                .ForMember(dest => dest.FechaSalida,
-                    opt => opt.MapFrom(src => src.NuevaFechaSalida));
+                    opt => opt.Ignore());
 
 
             // Usuarios
