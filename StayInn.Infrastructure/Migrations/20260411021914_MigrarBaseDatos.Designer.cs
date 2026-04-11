@@ -12,8 +12,8 @@ using StayInn.Infrastructure.Persistence.Data;
 namespace StayInn.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260216112548_EliminarImagenEntidadHabitacion")]
-    partial class EliminarImagenEntidadHabitacion
+    [Migration("20260411021914_MigrarBaseDatos")]
+    partial class MigrarBaseDatos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,11 +236,6 @@ namespace StayInn.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
@@ -376,11 +371,14 @@ namespace StayInn.Infrastructure.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
 
-                    b.Property<DateTimeOffset>("FechaEntrada")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("FechaEntrada")
+                        .HasColumnType("date");
 
-                    b.Property<DateTimeOffset>("FechaSalida")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("FechaRegistro")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("FechaSalida")
+                        .HasColumnType("date");
 
                     b.Property<int>("HabitacionId")
                         .HasColumnType("integer");
@@ -402,7 +400,7 @@ namespace StayInn.Infrastructure.Migrations
 
                     b.ToTable("Reservaciones", t =>
                         {
-                            t.HasCheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')");
+                            t.HasCheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada', 'Activa', 'Finalizada','Cancelada')");
 
                             t.HasCheckConstraint("CK_Reservacion_Fechas", "\"FechaSalida\" >= \"FechaEntrada\"");
 

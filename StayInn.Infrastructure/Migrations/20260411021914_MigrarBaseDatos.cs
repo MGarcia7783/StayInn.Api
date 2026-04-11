@@ -188,7 +188,6 @@ namespace StayInn.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nombre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     ImagenUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     HotelId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -212,7 +211,6 @@ namespace StayInn.Infrastructure.Migrations
                     Numero = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     Descripcion = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     PrecioNoche = table.Column<decimal>(type: "numeric(11,2)", nullable: false),
-                    ImagenUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     EstaDisponible = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     CapacidadMax = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
                     HotelId = table.Column<int>(type: "integer", nullable: false)
@@ -236,17 +234,18 @@ namespace StayInn.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FechaEntrada = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    FechaSalida = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    FechaEntrada = table.Column<DateOnly>(type: "date", nullable: false),
+                    FechaSalida = table.Column<DateOnly>(type: "date", nullable: false),
                     MontoTotal = table.Column<decimal>(type: "numeric(11,2)", nullable: false),
                     Estado = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    FechaRegistro = table.Column<DateOnly>(type: "date", nullable: false),
                     HabitacionId = table.Column<int>(type: "integer", nullable: false),
                     UsuarioId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservaciones", x => x.Id);
-                    table.CheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada','Cancelada','Completada')");
+                    table.CheckConstraint("CK_Reservacion_Estado", "\"Estado\" IN ('Pendiente','Confirmada', 'Activa', 'Finalizada','Cancelada')");
                     table.CheckConstraint("CK_Reservacion_Fechas", "\"FechaSalida\" >= \"FechaEntrada\"");
                     table.CheckConstraint("CK_Reservacion_MontoTotal", "\"MontoTotal\" >= 0");
                     table.ForeignKey(
