@@ -6,6 +6,7 @@ namespace StayInn.Application.Interfaces.Persistence
     {
         Task<IEnumerable<AreaEsparcimiento>> ObtenerInicioAsync();
         Task<IEnumerable<AreaEsparcimiento>> ObtenerTodasAsync();
+        Task<IEnumerable<AreaEsparcimiento>> BuscarAreaEsparcimiento(string nombre);
 
 
         Task<AreaEsparcimiento?> ObtenerPorIdAsync(int id);

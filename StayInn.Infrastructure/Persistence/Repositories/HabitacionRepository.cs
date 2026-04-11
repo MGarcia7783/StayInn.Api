@@ -3,6 +3,7 @@ using StayInn.Application.Interfaces.Persistence;
 using StayInn.Domain.Entities;
 using StayInn.Domain.Enums;
 using StayInn.Infrastructure.Persistence.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace StayInn.Infrastructure.Persistence.Repositories
 {
@@ -17,13 +18,39 @@ namespace StayInn.Infrastructure.Persistence.Repositories
 
         public async Task ActualizarAsync(Habitacion habitacion)
         {
-            _context.Habitaciones.Update(habitacion);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Habitacion>> BuscarHabitacion(string valor, int pagina, int tamanoPagina)
+        {
+            var valorNormalizado = valor.Trim().ToLower();
+            var pattern = $"%{valorNormalizado}%";
+
+            return await _context.Habitaciones
+                .Where(h =>
+                    EF.Functions.Like(h.Numero.ToLower(), pattern) ||
+                    EF.Functions.Like(h.Descripcion.ToLower(), pattern))
+                .OrderBy(h => h.Numero)
+                .Skip((pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
+                .ToListAsync();
         }
 
         public async Task CambiarEstadoAsync(Habitacion habitacion)
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> ContarBusquedaAsync(string valor)
+        {
+            var valorNormalizado = valor.Trim().ToLower();
+            var pattern = $"%{valorNormalizado}%";
+
+            return await _context.Habitaciones
+                .Where(h =>
+                    EF.Functions.Like(h.Numero.ToLower(), pattern) ||
+                    EF.Functions.Like(h.Descripcion.ToLower(), pattern))
+                .CountAsync();
         }
 
         public async Task<int> ContarDisponiblesAsync()
@@ -53,7 +80,7 @@ namespace StayInn.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Habitacion>> ObtenerDisponiblesAsync(int pagina, int tamanoPagina)
             => await _context.Habitaciones
                 .Where(h => h.EstaDisponible)
-                .OrderBy(h => h.PrecioNoche)
+                .OrderBy(h => h.Numero)
                 .Skip((pagina - 1) * tamanoPagina)
                 .Take(tamanoPagina)
                 .ToListAsync();
@@ -74,5 +101,9 @@ namespace StayInn.Infrastructure.Persistence.Repositories
                     r.HabitacionId == habitacionId &&
                     (r.Estado == EstadoReservacion.Pendiente ||
                      r.Estado == EstadoReservacion.Confirmada));
+
+        public async Task<bool> TienereservacionAsociada(int id)
+            => await _context.Reservaciones
+                .AnyAsync(r => r.HabitacionId == id);
     }
 }

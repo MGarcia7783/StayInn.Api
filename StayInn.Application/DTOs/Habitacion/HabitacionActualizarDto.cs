@@ -4,8 +4,6 @@ namespace StayInn.Application.DTOs.Habitacion
 {
     public class HabitacionActualizarDto
     {
-        [Required]
-        public int Id { get; set; }
 
         [Required(ErrorMessage = "El número de habitación es requerido.")]
         [StringLength(10, ErrorMessage = "El número de habitación no puede exceder los 10 caracteres.")]

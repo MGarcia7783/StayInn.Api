@@ -101,7 +101,7 @@ namespace StayInn.Api.Controllers
             };
 
             var hotel = await _service.ActualizarAsync(dto, nuevaImagenUrl);
-            return NoContent();
+            return Ok(hotel);
         }
     }
 }

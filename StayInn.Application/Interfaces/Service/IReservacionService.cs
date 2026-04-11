@@ -6,8 +6,12 @@ namespace StayInn.Application.Interfaces.Service
     public interface IReservacionService
     {
         Task<IEnumerable<ReservacionDto>> ObtenerTodasAsync(int pagina, int tamanoPagina);
+        Task<IEnumerable<ReservacionDto>> BuscarPorFechasAsync(DateOnly? fechaEntrada, DateOnly? fechaSalida, int pagina, int tamanoPagina);
+        Task<IEnumerable<ReservacionDto>> FiltrarReservacionAsync(string valor,  int pagina, int tamanoPagina);
         Task<int> ContarTodasAsync();
-        Task<IEnumerable<ReservacionDto>> ObtenerPorUsuarioAsync(string usuarioId);
+        Task<int> ContarBuscarPorFechasAsync(DateOnly? fechaEntrada, DateOnly? fechaSalida);
+        Task<int> ContarFiltroAsync(string valor);
+        Task<IEnumerable<ReservacionDto>> ObtenerPorUsuarioAsync(string usuario);
         Task<ReservacionDto> ObtenerPorIdAsync(int id);
 
 

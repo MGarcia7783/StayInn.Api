@@ -17,10 +17,10 @@ namespace StayInn.Application.Mappings
             CreateMap<Hotel, HotelDto>();
             CreateMap<HotelCrearDto, Hotel>();
             CreateMap<HotelActualizarDto, Hotel>()
-                .ForMember(dest => dest.ImagenPrincipal,
-                    opt => opt.Ignore())
-                .ForAllMembers(opt =>
-                    opt.Condition((src, dest, srcMember) => srcMember != null));
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.ImagenPrincipal, opt => opt.Ignore());
+                //.ForAllMembers(opt =>
+                   // opt.Condition((src, dest, srcMember) => srcMember != null));
 
 
             // Áreas de Esparcimiento
@@ -29,9 +29,8 @@ namespace StayInn.Application.Mappings
             CreateMap<AreaEsparcimiento, AreaEsparcimientoDto>();
             CreateMap<AreaEsparcimientoCrearDto, AreaEsparcimiento>();
             CreateMap<AreaEsparcimientoActualizarDto, AreaEsparcimiento>()
-                .ForAllMembers(opts =>
-                    opts.Condition((src, dest, srcMember) => srcMember != null)
-                );
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
 
             // Habitaciones
@@ -40,11 +39,12 @@ namespace StayInn.Application.Mappings
             CreateMap<HabitacionActualizarDto, Habitacion>()
                 .ForMember(d => d.HotelId, opt => opt.Ignore());
 
-
             // Reservaciones
             CreateMap<Reservacion, ReservacionDto>()
                 .ForMember(dest => dest.NumeroHabitacion,
                     opt => opt.MapFrom(src => src.Habitacion.Numero))
+                .ForMember(dest => dest.NombreUsuario,
+                    opt => opt.MapFrom(src => src.Usuario.NombreCompleto))
                 .ForMember(dest => dest.Estado,
                     opt => opt.MapFrom(src => src.Estado.ToString()));
 
@@ -53,7 +53,6 @@ namespace StayInn.Application.Mappings
                     opt => opt.Ignore())
                 .ForMember(dest => dest.MontoTotal,
                     opt => opt.Ignore());
-
 
             // Usuarios
             CreateMap<ApplicationUser, UsuarioDto>();

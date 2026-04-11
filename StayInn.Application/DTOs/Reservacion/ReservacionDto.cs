@@ -9,5 +9,6 @@ namespace StayInn.Application.DTOs.Reservacion
         public decimal MontoTotal { get; set; }
         public string Estado { get; set; } = null!;
         public string NumeroHabitacion { get; set; } = null!;
+        public string NombreUsuario { get; set; } = null!;
     }
 }

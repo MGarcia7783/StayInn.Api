@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StayInn.Infrastructure.Persistence.Data;
@@ -11,9 +12,11 @@ using StayInn.Infrastructure.Persistence.Data;
 namespace StayInn.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260301095057_EliminarDescripcioAreaEsparcimiento")]
+    partial class EliminarDescripcioAreaEsparcimiento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,9 +372,6 @@ namespace StayInn.Infrastructure.Migrations
                         .HasColumnType("character varying(15)");
 
                     b.Property<DateOnly>("FechaEntrada")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("FechaRegistro")
                         .HasColumnType("date");
 
                     b.Property<DateOnly>("FechaSalida")

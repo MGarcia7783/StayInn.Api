@@ -10,6 +10,7 @@ namespace StayInn.Domain.Entities
         public DateOnly FechaSalida { get; set; } 
         public decimal MontoTotal { get; set; }
         public EstadoReservacion Estado { get; set; } = EstadoReservacion.Pendiente;
+        public DateOnly FechaRegistro { get; private set; } = DateOnly.FromDateTime(DateTime.Now);
 
 
         public int HabitacionId { get; set; }

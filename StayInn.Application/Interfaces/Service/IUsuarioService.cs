@@ -1,8 +1,6 @@
-﻿using StayInn.Application.DTOs.Usuario;
+﻿using StayInn.Application.DTOs.Habitacion;
+using StayInn.Application.DTOs.Usuario;
 using StayInn.Application.Response;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StayInn.Application.Interfaces.Service
 {
@@ -16,7 +14,9 @@ namespace StayInn.Application.Interfaces.Service
 
 
         Task<ICollection<UsuarioDto>> ObtenerUsuariosAsync(int pagina, int tamanoPagina);
+        Task<IEnumerable<UsuarioDto>> BuscarUsuarioAsync(string valor, int pagina, int tamanoPagina);
         Task<UsuarioDto> ObtenerUsuarioPorIdAsync(string id);
-        Task<int> ContarAsycn();
+        Task<int> ContarAsync();
+        Task<int> ContarBusquedaAsync(string valor);
     }
 }

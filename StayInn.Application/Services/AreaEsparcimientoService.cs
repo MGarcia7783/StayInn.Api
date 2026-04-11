@@ -3,10 +3,6 @@ using StayInn.Application.DTOs.AreaEsparcimiento;
 using StayInn.Application.Interfaces.Persistence;
 using StayInn.Application.Interfaces.Service;
 using StayInn.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace StayInn.Application.Services
 {
     public class AreaEsparcimientoService : IAreaEsparcimientoService
@@ -54,6 +50,14 @@ namespace StayInn.Application.Services
 
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<AreaEsparcimientoDto>> BuscarAreaEsparcimientoAsync(string nombre)
+        {
+            var areaEsparcimiento = await _repository
+                .BuscarAreaEsparcimiento(nombre);
+
+            return _mapper.Map<IEnumerable<AreaEsparcimientoDto>>(areaEsparcimiento);
         }
 
         public async Task<AreaEsparcimientoDto> CrearAsync(AreaEsparcimientoCrearDto dto, string imagenUrl)

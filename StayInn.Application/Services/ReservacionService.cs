@@ -43,6 +43,16 @@ namespace StayInn.Application.Services
 
         #endregion
 
+        public async Task<IEnumerable<ReservacionDto>> BuscarPorFechasAsync(DateOnly? fechaEntrada, DateOnly? fechaSalida, int pagina, int tamanoPagina)
+        {
+            if (fechaEntrada >= fechaSalida)
+                throw new ArgumentException("La fecha de entrada debe ser mayor a la fecha de salida.");
+
+            var reservaciones = await _repository
+                .BuscarPorFechaAsync(fechaEntrada, fechaSalida, pagina, tamanoPagina);
+
+            return _mapper.Map<IEnumerable<ReservacionDto>>(reservaciones);
+        }
 
         public async Task<bool> CambiarEstadoAsync(int reservacionId, EstadoReservacion nuevoEstado)
         {
@@ -136,6 +146,16 @@ namespace StayInn.Application.Services
             return true;
         }
 
+        public async Task<int> ContarBuscarPorFechasAsync(DateOnly? fechaEntrada, DateOnly? fechaSalida)
+        {
+            return await _repository.ContarBuscarPorFechasAsync(fechaEntrada, fechaSalida);
+        }
+
+        public async Task<int> ContarFiltroAsync(string valor)
+        {
+            return await _repository.ContarFiltroAsync(valor);
+        }
+
         public async Task<int> ContarTodasAsync()
         {
             return await _repository.ContarTodasAsync();
@@ -151,7 +171,7 @@ namespace StayInn.Application.Services
 
             var hoy = DateOnly.FromDateTime(DateTime.Now);
             if (dto.FechaEntrada < hoy)
-                throw new InvalidOperationException("la fecha de entrada no puede ser menor que la fecha actual.");
+                throw new InvalidOperationException("La fecha de entrada no puede ser menor que la fecha actual.");
 
             if (dto.FechaSalida <= dto.FechaEntrada)
                 throw new InvalidOperationException("La fecha de salida debe ser mayor que la fecha de entrada.");
@@ -176,6 +196,14 @@ namespace StayInn.Application.Services
             await _repository.CrearAsync(reservacion);
 
             return _mapper.Map<ReservacionDto>(reservacion);
+        }
+
+        public async Task<IEnumerable<ReservacionDto>> FiltrarReservacionAsync(string valor, int pagina, int tamanoPagina)
+        {
+            var reservaciones = await _repository
+                .FiltrarReservacionAsync(valor, pagina, tamanoPagina);
+
+            return _mapper.Map<IEnumerable<ReservacionDto>>(reservaciones);
         }
 
         public async Task<ReservacionDto> ObtenerPorIdAsync(int id)

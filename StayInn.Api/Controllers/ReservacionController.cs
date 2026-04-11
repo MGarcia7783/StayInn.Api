@@ -30,6 +30,26 @@ namespace StayInn.Api.Controllers
             return Ok(new RespuestaPaginada<ReservacionDto>(reservaciones, total, pagina, tamanoPagina));
         }
 
+        [HttpGet("buscar-fecha")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult> BuscarPorFecha([FromQuery] DateOnly fechaEntrada, [FromQuery] DateOnly fechaSalida, [FromQuery] int pagina = 1, [FromQuery] int tamanoPagina = 10)
+        {
+            var reservaciones = await _service.BuscarPorFechasAsync(fechaEntrada, fechaSalida, pagina, tamanoPagina);
+            var total = await _service.ContarBuscarPorFechasAsync(fechaEntrada, fechaSalida);
+
+            return Ok(new RespuestaPaginada<ReservacionDto>(reservaciones, total, pagina, tamanoPagina));
+        }
+
+        [HttpGet("filtrar")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult> BuscarPorUsuario([FromQuery] string valor, [FromQuery] int pagina = 1, [FromQuery] int tamanoPagina = 10)
+        {
+            var reservaciones = await _service.FiltrarReservacionAsync(valor, pagina, tamanoPagina);
+            var total = await _service.ContarFiltroAsync(valor);
+
+            return Ok(new RespuestaPaginada<ReservacionDto>(reservaciones, total, pagina, tamanoPagina));
+        }
+
 
         [HttpGet("mis-reservaciones")]
         public async Task<ActionResult<IEnumerable<ReservacionDto>>> MisReservaciones()

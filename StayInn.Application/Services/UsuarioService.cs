@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StayInn.Application.DTOs.Habitacion;
 using StayInn.Application.DTOs.Usuario;
 using StayInn.Application.Interfaces.Persistence;
 using StayInn.Application.Interfaces.Service;
@@ -105,6 +106,14 @@ namespace StayInn.Application.Services
 
         #endregion
 
+        public async Task<IEnumerable<UsuarioDto>> BuscarUsuarioAsync(string valor, int pagina, int tamanoPagina)
+        {
+            var usuarios = await _repository
+                .BuscarUsuarioAsync(valor, pagina, tamanoPagina);
+
+            return _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
+        }
+
         public async Task CambiarEstadoAsync(string id, bool activo)
         {
             var usuario = await _repository.ObtenerPorIdAsync(id);
@@ -115,9 +124,14 @@ namespace StayInn.Application.Services
             await _userManager.UpdateAsync(usuario);
         }
 
-        public async Task<int> ContarAsycn()
+        public async Task<int> ContarAsync()
         {
             return await _repository.ContarAsync();
+        }
+
+        public async Task<int> ContarBusquedaAsync(string valor)
+        {
+            return await _repository.ContarBusquedaAsync(valor);
         }
 
         public async Task<LoginRespuestaUsuarioDto> LoginAsync(UsuarioLoginDto dto)

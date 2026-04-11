@@ -1,6 +1,7 @@
 ﻿
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using StayInn.Application.DTOs.Habitacion;
 using StayInn.Application.Interfaces.Persistence;
 using StayInn.Application.Interfaces.Service;
@@ -26,7 +27,7 @@ namespace StayInn.Application.Services
             if(dto == null)
                 throw new ArgumentNullException(nameof(dto), "Los datos de la solicitud no pueden ser nulos.");
 
-            var habitacion = await _repository.ObtenerPorIdAsync(dto.Id);
+            var habitacion = await _repository.ObtenerPorIdAsync(id);
             if (habitacion == null)
                 throw new KeyNotFoundException("La habitación no existe.");
 
@@ -44,6 +45,14 @@ namespace StayInn.Application.Services
             await _repository.ActualizarAsync(habitacion);
 
             return _mapper.Map<HabitacionDto>(habitacion);
+        }
+
+        public async Task<IEnumerable<HabitacionDto>> BuscarHabitacionAsync(string valor, int pagina, int tamanoPagina)
+        {
+            var habitaciones = await _repository
+                .BuscarHabitacion(valor, pagina, tamanoPagina);
+
+            return _mapper.Map<IEnumerable<HabitacionDto>>(habitaciones);
         }
 
         public async Task CambiarEstadoAsync(int id, bool disponible)
@@ -72,6 +81,11 @@ namespace StayInn.Application.Services
             // Modificar la entidad
             habitacion.EstaDisponible = disponible;
             await _repository.CambiarEstadoAsync(habitacion);
+        }
+
+        public async Task<int> ContarBusquedaAsync(string valor)
+        {
+            return await _repository.ContarBusquedaAsync(valor);
         }
 
         public async Task<int> ContarDisponiblesAsync()
@@ -113,6 +127,11 @@ namespace StayInn.Application.Services
             var habitacion = await _repository.ObtenerPorIdAsync(id);
             if (habitacion == null)
                 throw new KeyNotFoundException("La habitación no existe.");
+
+            // Validar si tiene reservaciones asociada
+            bool reservacionAsociada = await _repository.TienereservacionAsociada(id);
+            if (reservacionAsociada)
+                throw new InvalidOperationException("No se puede eliminar la habitación porque tiene reservaciones registradas.");
 
             // Eliminar registro
             await _repository.EliminarAsync(id);

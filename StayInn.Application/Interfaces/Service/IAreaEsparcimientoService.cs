@@ -1,4 +1,5 @@
 ﻿using StayInn.Application.DTOs.AreaEsparcimiento;
+using StayInn.Application.DTOs.Habitacion;
 
 namespace StayInn.Application.Interfaces.Service
 {
@@ -6,6 +7,7 @@ namespace StayInn.Application.Interfaces.Service
     {
         Task<IEnumerable<AreaEsparcimientoHomeDto>> ObtenerInicioAsync();
         Task<IEnumerable<AreaEsparcimientoDto>> ObtenerTodasAsync();
+        Task<IEnumerable<AreaEsparcimientoDto>> BuscarAreaEsparcimientoAsync(string nombre);
         Task<AreaEsparcimientoDto?> ObtenerPorIdAsync(int id);
 
 

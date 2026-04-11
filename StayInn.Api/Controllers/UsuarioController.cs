@@ -23,11 +23,20 @@ namespace StayInn.Api.Controllers
         public async Task<ActionResult> ObtenerTodos([FromQuery] int numeroPagina = 1, [FromQuery] int tamanoPagina = 10)
         {
             var usuarios = await _service.ObtenerUsuariosAsync(numeroPagina, tamanoPagina);
-            var totalUsuarios = await _service.ContarAsycn();
+            var totalUsuarios = await _service.ContarAsync();
 
             return Ok(new RespuestaPaginada<UsuarioDto>(usuarios, totalUsuarios, numeroPagina, tamanoPagina));
         }
 
+        [HttpGet("buscar")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult> BuscarUsuario([FromQuery] string valor, [FromQuery] int numeroPagina = 1, [FromQuery] int tamanoPagina = 10)
+        {
+            var usuarios = await _service.BuscarUsuarioAsync(valor, numeroPagina, tamanoPagina);
+            var totalUsuarios = await _service.ContarBusquedaAsync(valor);
+
+            return Ok(new RespuestaPaginada<UsuarioDto>(usuarios, totalUsuarios, numeroPagina, tamanoPagina));
+        }
 
         [HttpGet("{id}", Name = "ObtenerUsuario")]
         [Authorize(Roles = "Administrador")]

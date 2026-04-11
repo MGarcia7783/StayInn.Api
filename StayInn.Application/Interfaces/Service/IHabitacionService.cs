@@ -1,5 +1,6 @@
 ﻿
 using StayInn.Application.DTOs.Habitacion;
+using StayInn.Domain.Entities;
 
 namespace StayInn.Application.Interfaces.Service
 {
@@ -8,8 +9,10 @@ namespace StayInn.Application.Interfaces.Service
         Task<HabitacionDto?> ObtenerPorIdAsync(int id);
         Task<IEnumerable<HabitacionDto>> ObtenerTodasAsync(int pagina, int tamanoPagina);
         Task<IEnumerable<HabitacionDto>> ObtenerDisponiblesAsync(int pagina, int tamanoPagina);
+        Task<IEnumerable<HabitacionDto>> BuscarHabitacionAsync(string valor, int pagina, int tamanoPagina);
         Task<int> ContarTodasAsync();
         Task<int> ContarDisponiblesAsync();
+        Task<int> ContarBusquedaAsync(string valor);
 
 
         Task<HabitacionDto> CrearAsync(HabitacionCrearDto dto);

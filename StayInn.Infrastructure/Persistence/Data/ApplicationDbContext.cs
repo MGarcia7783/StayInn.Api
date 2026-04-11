@@ -87,10 +87,6 @@ namespace StayInn.Infrastructure.Persistence.Data
                 .IsRequired()
                 .HasMaxLength(50);
 
-                entity.Property(e => e.Descripcion)
-                .IsRequired()
-                .HasMaxLength(500);
-
                 entity.Property(e => e.ImagenUrl)
                 .IsRequired()
                 .HasMaxLength(500);
@@ -178,6 +174,10 @@ namespace StayInn.Infrastructure.Persistence.Data
                 .HasConversion<string>()
                 .HasMaxLength(15)
                 .IsRequired();
+
+                entity.Property(r => r.FechaRegistro)
+                .IsRequired()
+                .HasColumnType("date");
 
                 // Relación con el modelo habitación
                 entity.HasOne(r => r.Habitacion)

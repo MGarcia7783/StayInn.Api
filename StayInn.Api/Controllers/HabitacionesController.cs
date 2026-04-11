@@ -30,6 +30,17 @@ namespace StayInn.Api.Controllers
         }
 
 
+        [HttpGet("buscar")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Buscar([FromQuery] string valor, [FromQuery] int pagina = 1, [FromQuery] int tamanoPagina = 10)
+        {
+            var habitaciones = await _service.BuscarHabitacionAsync(valor, pagina, tamanoPagina);
+            var total = await _service.ContarBusquedaAsync(valor);
+
+            return Ok(new RespuestaPaginada<HabitacionDto>(habitaciones, total, pagina, tamanoPagina));
+        }
+
+
         [HttpGet("disponibles")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<HabitacionDto>>> ObtenerHabitacionesDisponibles([FromQuery] int pagina = 1, [FromQuery] int tamanoPagina = 10)
@@ -62,7 +73,7 @@ namespace StayInn.Api.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<HabitacionDto>> Actualizar(int id, [FromBody] HabitacionActualizarDto dto)
         {

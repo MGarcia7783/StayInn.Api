@@ -2,6 +2,7 @@
 using StayInn.Application.Interfaces.Persistence;
 using StayInn.Domain.Entities;
 using StayInn.Infrastructure.Persistence.Data;
+using System.Drawing;
 
 namespace StayInn.Infrastructure.Persistence.Repositories
 {
@@ -18,6 +19,18 @@ namespace StayInn.Infrastructure.Persistence.Repositories
         {
             _context.AreasEsparcimiento.Update(areaEsparcimiento);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<AreaEsparcimiento>> BuscarAreaEsparcimiento(string nombre)
+        {
+            var nombreNormalizado = nombre.Trim().ToLower();
+            var pattern = $"%{nombreNormalizado}%";
+
+            return await _context.AreasEsparcimiento
+                .Where(h =>
+                    EF.Functions.Like(h.Nombre.ToLower(), pattern))
+                .OrderBy(h => h.Nombre)
+                .ToListAsync();
         }
 
         public async Task CrearAsync(AreaEsparcimiento areaEsparcimiento)

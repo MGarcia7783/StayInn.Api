@@ -65,9 +65,9 @@ var connectionString =
     $"Port={port};" +
     $"Database={database};" +
     $"Username={user};" +
-    $"Password={password};" +
+    $"Password={password};"; /*+
     $"SSL Mode=Require;" +             
-    $"Trust Server Certificate=true;";
+    $"Trust Server Certificate=true;";*/
 
 // Registrar ApplicationDbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -107,6 +107,7 @@ builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IHabitacionRepository, HabitacionRepository>();
 builder.Services.AddScoped<IAreaEsparcimientoRepository, AreaEsparciminetoRepository>();
 builder.Services.AddScoped<IReservacionRepository, ReservacionRepository>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 
@@ -115,8 +116,9 @@ builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
 builder.Services.AddScoped<IHabitacionService, HabitacionService>();
 builder.Services.AddScoped<IAreaEsparcimientoService, AreaEsparcimientoService>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IReservacionService, ReservacionService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 
 // Configurar JWT Authentication
@@ -180,7 +182,7 @@ builder.Services.AddAuthentication
 
 
 // Registrar AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(cgf => { }, typeof(MappingProfile).Assembly);
 
 
 // Agregar controladores
@@ -271,12 +273,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
     {
-        if (allowedOrigins != null && allowedOrigins.Length > 0)
+        if (builder.Environment.IsDevelopment())
         {
-            policy.WithOrigins(allowedOrigins)
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
+            policy.WithOrigins(
+                "http://localhost:4200",    // Angular
+                "http://localhost:3000"    // React
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
         }
         else
         {

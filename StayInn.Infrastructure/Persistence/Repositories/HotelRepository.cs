@@ -16,7 +16,7 @@ namespace StayInn.Infrastructure.Persistence.Repositories
 
         public async Task ActualizarAsync(Hotel hotel)
         {
-            _context.Hotel.Update(hotel);
+            //_context.Hotel.Update(hotel);
             await _context.SaveChangesAsync();
         }
 

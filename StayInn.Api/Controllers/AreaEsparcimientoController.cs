@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayInn.Api.Request.AreaEsparcimiento;
 using StayInn.Application.DTOs.AreaEsparcimiento;
+using StayInn.Application.DTOs.Habitacion;
 using StayInn.Application.Interfaces.Service;
+using StayInn.Application.Response;
 
 namespace StayInn.Api.Controllers
 {
@@ -49,6 +51,15 @@ namespace StayInn.Api.Controllers
             return Ok(registro);
         }
 
+        [HttpGet("buscar")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Buscar([FromQuery] string nombre)
+        {
+            var areaEsparcmiento = await _service.BuscarAreaEsparcimientoAsync(nombre);
+
+            return Ok(areaEsparcmiento);
+        }
+
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
@@ -66,8 +77,7 @@ namespace StayInn.Api.Controllers
 
             var dto = new AreaEsparcimientoCrearDto
             {
-                Nombre = request.Nombre,
-                Descripcion = request.Descripcion,
+                Nombre = request.Nombre
                 //HotelId = request.HotelId,
             };
 
@@ -76,7 +86,7 @@ namespace StayInn.Api.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         [Authorize(Roles = "Administrador")]
         public async Task<ActionResult<AreaEsparcimientoDto>> Actualizar(int id, [FromForm] AreaEsparcimientoActualizarRequest request)
         {
@@ -97,8 +107,7 @@ namespace StayInn.Api.Controllers
 
             var dto = new AreaEsparcimientoActualizarDto
             {
-                Nombre = request.Nombre,
-                Descripcion = request.Descripcion
+                Nombre = request.Nombre
             };
 
             var registro = await _service.ActualizarAsync(id, dto, nuevaImagenUrl);
