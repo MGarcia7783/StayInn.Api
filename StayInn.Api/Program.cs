@@ -65,9 +65,9 @@ var connectionString =
     $"Port={port};" +
     $"Database={database};" +
     $"Username={user};" +
-    $"Password={password};"; /*+
+    $"Password={password};" +
     $"SSL Mode=Require;" +             
-    $"Trust Server Certificate=true;";*/
+    $"Trust Server Certificate=true;";
 
 // Registrar ApplicationDbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
