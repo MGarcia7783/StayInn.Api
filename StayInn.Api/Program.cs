@@ -285,8 +285,9 @@ builder.Services.AddCors(options =>
         else
         {
             // Solo para desarrollo si no hay configuración
-            policy.AllowAnyHeader()
-                .AllowAnyMethod();
+            policy.WithOrigins("https://stayinnresort.netlify.app")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         }
     });
 });
