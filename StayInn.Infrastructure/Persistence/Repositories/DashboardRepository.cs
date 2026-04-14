@@ -21,7 +21,9 @@ namespace StayInn.Infrastructure.Persistence.Repositories
         public async Task<DashboardDto> ObtenerDatosDashboardAsync()
         {
             // Obtenemos la fecha actual en formato DateOnly
-            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            var hoy = await _context.Reservaciones
+                .MaxAsync(r => (DateOnly?)r.FechaEntrada)
+                ?? DateOnly.FromDateTime(DateTime.Now);
             var primerDiaMes = new DateOnly(hoy.Year, hoy.Month, 1);
             var haceSieteDias = hoy.AddDays(-7);
 
@@ -63,22 +65,21 @@ namespace StayInn.Infrastructure.Persistence.Repositories
                 }).ToListAsync();
 
             // 4. Tendencia (Últimos 7 días)
-            var datosTendenciaRaw = await _context.Reservaciones
-                .Where(r => r.FechaRegistro >= haceSieteDias)
-                .GroupBy(r => r.FechaRegistro)
-                .Select(g => new {
-                    FechaKey = g.Key,
-                    Cantidad = g.Count()
-                })
-                .OrderBy(x => x.FechaKey)
-                .ToListAsync();
+            var tendencia = new List<TendenciaDto>();
 
-            // Formatear la fecha en memoraia
-            var tendencia = datosTendenciaRaw.Select(t => new TendenciaDto
+            for (int i = 6; i >= 0; i--)
             {
-                Fecha = t.FechaKey.ToString("dd MMM"),
-                Cantidad = t.Cantidad
-            }).ToList();
+                var fecha = hoy.AddDays(-i);
+
+                var cantidad = await _context.Reservaciones
+                    .CountAsync(r => r.FechaEntrada == fecha);
+
+                tendencia.Add(new TendenciaDto
+                {
+                    Fecha = fecha.ToString("dd MMM"),
+                    Cantidad = cantidad
+                });
+            }
 
             return new DashboardDto
             {
