@@ -276,16 +276,14 @@ builder.Services.AddCors(options =>
         if (builder.Environment.IsDevelopment())
         {
             policy.WithOrigins(
-                "http://localhost:4200",    // Angular
-                "http://localhost:3000"    // React
+                "http://localhost:4200"    
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
         }
         else
         {
-            // Solo para desarrollo si no hay configuración
-            policy.WithOrigins("https://stayinnresort.netlify.app")
+            policy.WithOrigins("urldelfrontend")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         }
@@ -304,7 +302,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 
 
-// Configuración para entornos de desarrollo y produccon
+// Configuración para entornos de desarrollo y produccion
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {

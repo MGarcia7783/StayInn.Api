@@ -30,7 +30,8 @@ namespace StayInn.Infrastructure.Persistence.Repositories
                 .Where(h =>
                     EF.Functions.Like(h.Numero.ToLower(), pattern) ||
                     EF.Functions.Like(h.Descripcion.ToLower(), pattern))
-                .OrderBy(h => h.Numero)
+                .OrderByDescending(h => h.EstaDisponible)
+                .ThenBy(h => h.Id)
                 .Skip((pagina - 1) * tamanoPagina)
                 .Take(tamanoPagina)
                 .ToListAsync();
@@ -91,6 +92,7 @@ namespace StayInn.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Habitacion>> ObtenerTodasAsync(int pagina, int tamanoPagina)
             => await _context.Habitaciones
                 .OrderByDescending(h => h.EstaDisponible)
+                .ThenBy(h => h.Id)
                 .Skip((pagina - 1) * tamanoPagina)
                 .Take(tamanoPagina)
                 .ToListAsync();
