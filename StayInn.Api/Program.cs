@@ -283,7 +283,7 @@ builder.Services.AddCors(options =>
         }
         else
         {
-            policy.WithOrigins("urldelfrontend")
+            policy.WithOrigins("https://stayinnresort.netlify.app")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         }
